@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GZipTest</name>
+    </assembly>
+    <members>
+        <member name="T:GZipTest.Zip.Archiver">
+            <summary>
+            Interface to communicate with compressor and decompressor
+            </summary>
+        </member>
+        <member name="M:GZipTest.Zip.Archiver.RemoveOnError(System.String)">
+            <summary>
+            Removes file if process is interrupted with exception
+            </summary>
+            <param name="fileName"></param>
+        </member>
+        <member name="M:GZipTest.Zip.Archiver.Launch(System.String)">
+            <summary>
+            Method runs command entered by user
+            </summary>
+            <param name="command">Command to execute (compress/decompress)</param>
+            <returns>Returns 0 if execution was succesfull, 1 otherwise</returns>
+        </member>
+        <member name="T:GZipTest.Zip.Compression.Compressor">
+            <summary>
+            Class performing operations to compress targeted file
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.Compression.Compressor._queueToCompress">
+            <summary>
+            Queue with elements ready to be compressed
+            </summary>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Compressor.#ctor(System.String,System.String)">
+            <summary>
+            Creates instance of Compressor class with specified source file and target file
+            </summary>
+            <param name="src">File to compress</param>
+            <param name="dst">Result of compression</param>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Compressor.Compress">
+            <summary>
+            Execute compression process
+            </summary>
+            <returns>Returns 0 if succeeded</returns>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Compressor.CompressBlock(GZipTest.Data.IndexedBlock)">
+            <summary>
+            Compresses given IndexedBlock data
+            </summary>
+            <param name="block">Data block to compress</param>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Compressor.StartCompressing(System.Collections.Generic.Queue{GZipTest.Data.IndexedBlock})">
+            <summary>
+            Start compression in multiple threads
+            </summary>
+            <param name="indexedBlocks">Queue of elements with data to compress</param>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Compressor.WriteToFile(System.Collections.Generic.IEnumerable{GZipTest.Data.IndexedBlock})">
+            <summary>
+            Writes compressed data to target file
+            </summary>
+            <param name="chunks">Ordered collection of elements to write</param>
+        </member>
+        <member name="T:GZipTest.Zip.Compression.Decompressor">
+            <summary>
+            Class performing operations to decompress targeted file
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.Compression.Decompressor._queueToDecompress">
+            <summary>
+            Queue with elements ready to be decompressed
+            </summary>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Decompressor.#ctor(System.String,System.String)">
+            <summary>
+            Creates instance of class with specified source file and target file
+            </summary>
+            <param name="src">File to decompress</param>
+            <param name="dst">Result of decompression</param>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Decompressor.Decompress">
+            <summary>
+            Executes decompression process
+            </summary>
+            <returns>Return 0 if succeeded</returns>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Decompressor.StartDecompressing(System.Collections.Generic.Queue{GZipTest.Data.IndexedBlock})">
+            <summary>
+            Starts decompression in multiple threads
+            </summary>
+            <param name="blocks">Queue of elements to decompress</param>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Decompressor.DecompressBlock(GZipTest.Data.IndexedBlock)">
+            <summary>
+            Decompresses given IndexedBlock data
+            </summary>
+            <param name="block">Data block to decompress</param>
+        </member>
+        <member name="M:GZipTest.Zip.Compression.Decompressor.WriteToFile(System.Collections.Generic.IEnumerable{GZipTest.Data.IndexedBlock})">
+            <summary>
+            Writes decompressed data to target file
+            </summary>
+            <param name="chunks">Ordered collection of decompressed elements to write</param>
+        </member>
+        <member name="T:GZipTest.Zip.FileCompresser">
+            <summary>
+            Abstract class containing common members for Compressor
+            and Decompressor classes
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.FileCompresser.locker">
+            <summary>
+            Locker, needed when writing to file
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.FileCompresser.pool">
+            <summary>
+            Pool of available threads
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.FileCompresser.writer">
+            <summary>
+            Thread 
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.FileCompresser.flag">
+            <summary>
+            Signal, telling compiler that all reading threads are finished
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.FileCompresser.blocksToWrite">
+            <summary>
+            Collection of elements ready to write
+            </summary>
+        </member>
+        <member name="F:GZipTest.Zip.FileCompresser.counter">
+            <summary>
+            Variable counting finished read threads
+            </summary>
+        </member>
+        <member name="T:GZipTest.Data.IndexedBlock">
+            <summary>
+            This class describes block containing data to compress/decompress
+            and ID of thread working with it.
+            </summary>
+        </member>
+        <member name="M:GZipTest.Data.IndexedBlock.#ctor(System.Int32,System.Byte[],System.Byte[])">
+            <summary>
+            Creates instance of class
+            </summary>
+            <param name="id">Thread ID</param>
+            <param name="data">Data to process</param>
+            <param name="compressedData">Compressed data (needed in decompression)</param>
+        </member>
+    </members>
+</doc>
